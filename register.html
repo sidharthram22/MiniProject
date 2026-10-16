@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Registration - NPTEL LITE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
+<body>
+  <div class="auth-shell">
+    <div class="auth-card">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <span class="brand-badge">NPTEL LITE</span>
+        <h1 style="margin-top: 10px;">Create Account</h1>
+        <p style="color: var(--muted); font-size: 0.9rem;">Register to access AI mock tests and track rankings.</p>
+      </div>
+
+      {% if error %}
+      <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; padding: 12px; border-radius: 12px; margin-bottom: 16px; font-size: 0.88rem;">
+        ⚠️ {{ error }}
+      </div>
+      {% endif %}
+
+      <form action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="e.g. Aisha Sharma" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">NPTEL Email / ID</label>
+          <input type="email" id="email" name="email" placeholder="e.g. aisha@nptel.ac.in" required autocomplete="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Create a password" required />
+        </div>
+
+        <div class="form-group">
+          <label for="role">User Role</label>
+          <select id="role" name="role" style="width: 100%; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border);">
+            <option value="student" selected>Student Learner</option>
+            <option value="admin">Course Administrator</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Select Courses to Enroll In</label>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 6px;">
+            {% for course in courses %}
+            <label style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 10px; padding: 10px; cursor: pointer; font-size: 0.9rem;">
+              <input type="checkbox" name="courses" value="{{ course.id }}" checked style="accent-color: var(--accent);" />
+              <span>{{ course.title }} ({{ course.category }})</span>
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Complete Registration</button>
+      </form>
+
+      <div style="margin-top: 20px; text-align: center; font-size: 0.9rem; color: var(--muted);">
+        <p>Already registered? <a href="{% url 'login' %}" style="color: var(--accent); font-weight: 600; text-decoration: none;">Sign In</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

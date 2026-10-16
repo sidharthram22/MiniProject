@@ -1,0 +1,736 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NPTEL LITE — AI-Powered Mock Test Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111f;
+      --panel: rgba(13, 25, 48, 0.88);
+      --text: #f4f7fb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #6366f1;
+      --success: #10b981;
+      --border: rgba(255, 255, 255, 0.09);
+      --navy-dark: #0f172a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top left, #0f2342, var(--bg) 60%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAVBAR ===== */
+    .landing-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 20px 32px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
+
+    .brand-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 22px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border: none;
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 80px 32px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 99px;
+      margin-bottom: 24px;
+      letter-spacing: 0.04em;
+    }
+
+    .hero h1 {
+      font-size: 3.4rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 40%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero {
+      padding: 14px 34px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 14px;
+    }
+
+    .hero-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    /* ===== HERO PREVIEW CARD ===== */
+    .hero-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .card-badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-box strong {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-box span {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .mini-q {
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .mini-q p {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .mini-opts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+
+    .mini-opt {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .mini-opt.correct {
+      border-color: var(--success);
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.08);
+      font-weight: 600;
+    }
+
+    .timer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #f59e0b;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 99px;
+      margin-top: 8px;
+    }
+
+    /* ===== FEATURES SECTION ===== */
+    .section {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 80px 32px;
+    }
+
+    .section-eyebrow {
+      text-align: center;
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 560px;
+      margin: 0 auto 56px;
+      line-height: 1.7;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ===== STATS STRIP ===== */
+    .stats-strip {
+      background: rgba(13, 25, 48, 0.7);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+    }
+
+    .stats-strip-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 48px 32px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    .strip-stat strong {
+      display: block;
+      font-size: 2.4rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .strip-stat span {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      position: relative;
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 28px 20px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      position: relative;
+    }
+
+    .step-num {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 auto 16px;
+    }
+
+    .step-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ===== CTA BANNER ===== */
+    .cta-banner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    .cta-inner {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(56,189,248,0.2));
+      border: 1px solid rgba(56,189,248,0.3);
+      border-radius: 28px;
+      padding: 60px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-inner::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-inner h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .cta-inner p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 32px;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .cta-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 32px;
+      text-align: center;
+    }
+
+    footer p {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 48px 24px 40px;
+        gap: 36px;
+      }
+
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stats-strip-inner {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cta-inner {
+        padding: 40px 24px;
+      }
+
+      .cta-inner h2 {
+        font-size: 1.7rem;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .landing-nav {
+        padding: 16px 20px;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-strip-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="landing-nav">
+    <div class="nav-brand">
+      <span class="brand-badge">NPTEL LITE</span>
+      <span class="brand-name">AI Mock Test Portal</span>
+    </div>
+    <div class="nav-actions">
+      <a href="{% url 'login' %}" class="btn-ghost">Sign In</a>
+      <a href="{% url 'register' %}" class="btn-primary">Get Started Free</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="hero-eyebrow">✨ Powered by Claude AI</div>
+      <h1>Ace Your NPTEL Exams with AI Mock Tests</h1>
+      <p class="hero-sub">
+        Upload your NPTEL course PDFs and get instant, personalised MCQs generated by Claude AI.
+        Track your progress, compete on leaderboards, and master every subject at your own pace.
+      </p>
+      <div class="hero-cta-group">
+        <a href="{% url 'register' %}" class="btn-primary btn-hero">🚀 Start Learning Free</a>
+        <a href="{% url 'login' %}" class="btn-ghost btn-hero">Sign In →</a>
+      </div>
+      <p class="hero-note">✓ No credit card needed &nbsp;·&nbsp; ✓ Free for all NPTEL students &nbsp;·&nbsp; ✓ Instant AI feedback</p>
+    </div>
+
+    <!-- Live Preview Card -->
+    <div class="hero-card">
+      <div class="card-header">
+        <span class="card-title">📊 Live Dashboard Preview</span>
+        <span class="card-badge">● Live</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <strong>94%</strong>
+          <span>Accuracy</span>
+        </div>
+        <div class="stat-box">
+          <strong>27</strong>
+          <span>Tests Taken</span>
+        </div>
+        <div class="stat-box">
+          <strong>🔥 12</strong>
+          <span>Day Streak</span>
+        </div>
+      </div>
+      <div class="mini-q">
+        <p>Q3. Which scheduling algorithm gives maximum throughput?</p>
+        <div class="mini-opts">
+          <div class="mini-opt">A. FCFS</div>
+          <div class="mini-opt correct">B. SJF ✓</div>
+          <div class="mini-opt">C. Round Robin</div>
+          <div class="mini-opt">D. Priority</div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.8rem;color:var(--muted);">Claude AI Explanation loaded</span>
+        <div class="timer-pill">⏱ 02:14 left</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS STRIP ===== -->
+  <div class="stats-strip">
+    <div class="stats-strip-inner">
+      <div class="strip-stat">
+        <strong>50+</strong>
+        <span>NPTEL Courses Available</span>
+      </div>
+      <div class="strip-stat">
+        <strong>1000+</strong>
+        <span>AI-Generated MCQs</span>
+      </div>
+      <div class="strip-stat">
+        <strong>∞</strong>
+        <span>PDF-to-Test Generation</span>
+      </div>
+      <div class="strip-stat">
+        <strong>100%</strong>
+        <span>Free for Students</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FEATURES SECTION ===== -->
+  <section class="section">
+    <p class="section-eyebrow">Features</p>
+    <h2 class="section-title">Everything you need to crack NPTEL</h2>
+    <p class="section-sub">
+      From automated PDF analysis to real-time leaderboards — NPTEL LITE has all the tools to boost your exam score.
+    </p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">📄</span>
+        <h3>PDF → AI MCQ Generator</h3>
+        <p>Upload any NPTEL lecture PDF. Claude AI reads and analyses it on the fly, generating custom MCQs tuned to your difficulty level.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🧠</span>
+        <h3>Detailed AI Explanations</h3>
+        <p>After every answer, Claude AI provides in-depth reasoning so you understand the concept, not just the answer choice.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⏱</span>
+        <h3>Timed Mock Tests</h3>
+        <p>Simulate real exam conditions with a built-in countdown timer, question navigation, and mid-test bookmarking.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🏆</span>
+        <h3>Live Leaderboard</h3>
+        <p>Compete with fellow NPTEL students nationwide. Watch your rank climb as you improve your accuracy and score more points.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📌</span>
+        <h3>Smart Bookmarks</h3>
+        <p>Bookmark tricky questions during tests and revisit them later in a dedicated review tab — your personal weak-spot tracker.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3>Weekly Challenges</h3>
+        <p>Earn bonus points through time-limited weekly challenge rounds. Stay consistent, build streaks, and rise to the top.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section" style="padding-top: 0;">
+    <p class="section-eyebrow">How It Works</p>
+    <h2 class="section-title">From sign-up to test score in 4 steps</h2>
+    <p class="section-sub">No complicated setup. Just create your account and start learning.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h4>Create Your Account</h4>
+        <p>Sign up free and select your enrolled NPTEL courses from the list.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h4>Upload a Course PDF</h4>
+        <p>Drop in any lecture note, assignment, or textbook chapter as a PDF.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h4>AI Generates MCQs</h4>
+        <p>Claude AI analyses your document and creates a personalised question set in seconds.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h4>Take the Test & Review</h4>
+        <p>Attempt the timed test, get an instant score, and review AI explanations for every question.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <div class="cta-banner">
+    <div class="cta-inner">
+      <h2>Ready to boost your NPTEL score?</h2>
+      <p>Join thousands of students using AI-powered practice to prepare smarter — not harder.</p>
+      <div class="cta-btns">
+        <a href="{% url 'register' %}" class="btn-primary btn-hero">🎓 Create Free Account</a>
+        <a href="{% url 'login' %}" class="btn-ghost btn-hero">Already have an account? Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>
+      © 2026 NPTEL LITE · AI Mock Test Platform &nbsp;·&nbsp;
+      <a href="{% url 'login' %}">Sign In</a> &nbsp;·&nbsp;
+      <a href="{% url 'register' %}">Register</a>
+    </p>
+  </footer>
+
+</body>
+</html>
